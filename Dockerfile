@@ -37,6 +37,7 @@ WORKDIR /app
 # 预先加载 Composer 包依赖，优化 Docker 构建镜像的速度
 COPY ./composer.json /app/
 COPY ./composer.lock /app/
+COPY ./.env.example /app/.env
 RUN composer install  --no-autoloader --no-scripts
 
 # 复制代码到 App 目录
@@ -47,3 +48,5 @@ COPY . /app
 RUN composer install \
     && chown -R www-data:www-data /app \
     && chmod -R 0777 /app/storage
+
+RUN php artisan key:generate 
